@@ -51,8 +51,40 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.MyViewHo
 
 
     public EntriesAdapter() {
-        // TODO maak een ChildEventListener
+        mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
+        mFirebaseDatabaseReference.child("entries").addChildEventListener(new ChildEventListener() {
 
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                DiaryEntry e = dataSnapshot.getValue(DiaryEntry.class);
+                e.key = dataSnapshot.getKey();
+                diariesList.add(e);
+                notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                DiaryEntry e = dataSnapshot.getValue(DiaryEntry.class);
+                e.key = dataSnapshot.getKey();
+                diariesList.remove(e);
+                notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override

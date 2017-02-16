@@ -43,7 +43,12 @@ public class ShowContent extends AppCompatActivity {
                         TextView tv2 = (TextView) findViewById(R.id.contentView);
                         TextView tv3 = (TextView) findViewById(R.id.dateView);
                         //TODO
-
+                        DiaryEntry diaryEntry = dataSnapshot.getValue(DiaryEntry.class);
+                        tv1.setText(diaryEntry.getTitle());
+                        tv2.setText(diaryEntry.getContent());
+                        Date date = new Date(diaryEntry.getDate());
+                        String dateData = DateFormat.format("MMM dd, yyyy h:mmaa", date).toString();
+                        tv3.setText(dateData);
                     }
 
                     @Override
@@ -70,7 +75,9 @@ public class ShowContent extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.deleteitem) {
-            //TODO
+            mDatabase.child("entries").child(key).removeValue();
+
+            startActivity(new Intent(this, ShowDiaries.class));
             return true;
         }
         return super.onOptionsItemSelected(item);

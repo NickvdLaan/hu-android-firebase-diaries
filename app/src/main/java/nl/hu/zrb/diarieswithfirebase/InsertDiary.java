@@ -1,5 +1,6 @@
 package nl.hu.zrb.diarieswithfirebase;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -48,8 +49,10 @@ public class InsertDiary extends AppCompatActivity {
             entry.setTitle(titleET.getText().toString());
             entry.setContent(contentET.getText().toString());
             entry.setDate(new Date().getTime());
-           //TODO
 
+            mDatabase.child("entries").push().setValue(entry);
+            startActivity(new Intent(this, ShowDiaries.class));
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
